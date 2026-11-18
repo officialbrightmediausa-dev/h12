@@ -824,23 +824,23 @@ const PILOT_CSS = `
 html,body.pilot{margin:0;height:100%;background:var(--bg);color:var(--fg);font-family:var(--sans);overflow:hidden;overscroll-behavior:none;touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
 body.pilot *{box-sizing:border-box}
 body.pilot button{font-family:var(--sans);color:var(--fg);-webkit-tap-highlight-color:transparent;touch-action:none}
-.pl{position:fixed;inset:0;display:grid;grid-template-rows:auto auto 1fr;padding:max(8px,env(safe-area-inset-top)) max(12px,env(safe-area-inset-right)) max(8px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left));gap:6px}
+.pl{position:fixed;inset:0;display:grid;grid-template-rows:auto 1fr;padding:max(8px,env(safe-area-inset-top)) max(12px,env(safe-area-inset-right)) max(8px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left));gap:6px}
 .pl-top{display:flex;align-items:center;gap:8px;min-height:40px;min-width:0;overflow:hidden}
 .pl-conn span{overflow:hidden;text-overflow:ellipsis}
 .pl-conn{flex:none;max-width:200px;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:7px;padding:6px 10px;border-radius:999px;background:var(--s1);border:1px solid var(--ln);font-size:12px;font-weight:600;white-space:nowrap}
 .pl-conn i{width:8px;height:8px;border-radius:50%;background:var(--warn)}
 .pl-conn.ok i{background:var(--ac);box-shadow:0 0 8px var(--ac)} .pl-conn.bad i{background:var(--red)}
-.pl-tm{flex:1;display:flex;gap:4px;min-width:0;overflow:hidden}
-.pl-tm div{flex:1;min-width:0;padding:4px 7px;border-radius:9px;background:var(--s1);border:1px solid var(--ln);display:flex;flex-direction:column;gap:1px}
-.pl-tm em{font-style:normal;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--mu)}
-.pl-tm b{font-weight:600;font-size:14px;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pl-tm{flex:1;display:flex;justify-content:center;gap:clamp(14px,4vw,40px);min-width:0;overflow:hidden}
+.pl-tm div{min-width:0;display:flex;align-items:baseline;gap:7px}
+.pl-tm em{font-style:normal;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--mu)}
+.pl-tm b{font-weight:600;font-size:16px;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pl-tm .low b{color:var(--warn)} .pl-tm .crit b{color:var(--red)}
 .pl-gear{flex:none;width:40px;height:40px;border-radius:12px;border:1px solid var(--ln);background:var(--s1);font-size:18px;cursor:pointer}
-.pl-warn{min-height:0;text-align:center;font-weight:600;font-size:13px;border-radius:10px;padding:0 10px;overflow:hidden;max-height:0;transition:max-height .2s}
+.pl-warn{position:absolute;left:50%;top:max(54px,calc(env(safe-area-inset-top) + 46px));transform:translateX(-50%);width:min(560px,70vw);z-index:5;text-align:center;font-weight:600;font-size:13px;border-radius:10px;padding:0 10px;overflow:hidden;max-height:0;transition:max-height .2s}
 .pl-warn.on{max-height:34px;padding:7px 10px;background:rgba(255,77,79,.16);color:#ffb3b4;border:1px solid rgba(255,77,79,.45)}
 .pl-warn.info{background:rgba(54,209,180,.12);color:var(--ac);border-color:rgba(54,209,180,.4)}
-.pl-main{display:grid;grid-template-columns:1fr minmax(260px,1.05fr) 1fr;align-items:center;gap:8px;min-height:0}
-.pad{position:relative;justify-self:center;width:min(42vh*1.0,30vw,250px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,var(--s2) 0,var(--s1) 70%);border:1px solid var(--ln);touch-action:none}
+.pl-main{display:grid;grid-template-columns:1fr minmax(170px,.6fr) 1fr;align-items:center;gap:8px;min-height:0}
+.pad{position:relative;justify-self:center;width:min(64vh,33vw,300px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,var(--s2) 0,var(--s1) 70%);border:1px solid var(--ln);touch-action:none}
 .pad::before,.pad::after{content:"";position:absolute;background:var(--ln)}
 .pad::before{left:50%;top:10%;bottom:10%;width:1px}.pad::after{top:50%;left:10%;right:10%;height:1px}
 .pad .knob{position:absolute;left:50%;top:50%;width:34%;aspect-ratio:1;margin:-17% 0 0 -17%;border-radius:50%;background:var(--fg);opacity:.9;box-shadow:0 4px 16px rgba(0,0,0,.5);z-index:2;pointer-events:none}
@@ -848,15 +848,22 @@ body.pilot button{font-family:var(--sans);color:var(--fg);-webkit-tap-highlight-
 .pad .lab{position:absolute;left:0;right:0;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--mu);text-align:center;pointer-events:none}
 .pad .lab.t{top:-17px}.pad .lab.b{bottom:-17px}
 .pad .tick{position:absolute;left:6%;right:6%;top:50%;height:2px;margin-top:-1px;background:var(--ac);opacity:.35;z-index:1;pointer-events:none}
-.pl-mid{display:grid;gap:7px;align-content:center}
+.pl-mid{display:grid;gap:10px;align-content:center}
 .row3{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.row2{display:grid;grid-template-columns:1fr 1fr;gap:7px}.row2.sp{grid-template-columns:.75fr 1.25fr}
 .pb{min-height:44px;border-radius:12px;border:1px solid var(--ln);background:var(--s2);font-weight:600;font-size:13px;cursor:pointer;position:relative;overflow:hidden}
 .pb:active{transform:scale(.98)}
 .pb.on{background:var(--ac);color:var(--acfg);border-color:var(--ac)}
-.pb.arm{min-height:52px;font-size:14px}
-.pb.arm.armed{border-color:var(--warn);color:var(--warn)}
-.pb.arm i{position:absolute;left:0;bottom:0;height:4px;width:0;background:var(--ac)}
+.pb i{position:absolute;left:0;bottom:0;height:4px;width:0;background:var(--ac)}
+.pb[hidden]{display:none}
+.pb.main{min-height:66px;font-size:16px}
+.pb.main.go{background:var(--ac);color:var(--acfg);border-color:var(--ac)}
+.pb.main.hold{border-color:var(--ac);color:var(--ac)}
+.pb.sub{min-height:48px;font-size:14px}
+.pb.sub.hold{color:var(--warn);border-color:rgba(255,181,71,.5)}
+.pb.sub.act{background:rgba(54,209,180,.14);border-color:var(--ac);color:var(--ac)}
+.pb.dim{opacity:.45}
 .pb.stop{background:var(--red);border-color:var(--red);color:#fff;font-weight:700;letter-spacing:.06em}
+.pl-mid .pb.stop{min-height:40px;font-size:12px;margin-top:6px}
 .seg3{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--ln);border-radius:12px;overflow:hidden;background:var(--s1)}
 .seg3 button{min-height:38px;border:0;background:none;font-weight:600;font-size:12px;cursor:pointer;padding:0 2px}
 .seg3 button.on{background:var(--ac);color:var(--acfg)}
@@ -887,20 +894,15 @@ body.pilot button{font-family:var(--sans);color:var(--fg);-webkit-tap-highlight-
 .pl-join input{font:700 30px/1 var(--sans);letter-spacing:.3em;text-align:center;padding:12px;border-radius:12px;border:1px solid var(--ln);background:var(--s2);color:var(--fg);width:100%;touch-action:manipulation;-webkit-user-select:text;user-select:text}
 .pl-toast{position:fixed;left:50%;top:max(54px,env(safe-area-inset-top));transform:translateX(-50%);background:var(--fg);color:var(--bg);font-weight:600;font-size:13px;padding:8px 14px;border-radius:12px;z-index:25;pointer-events:none;max-width:80vw;text-align:center}
 .pl-toast.bad{background:var(--red);color:#fff}
-.pl-brand{font-family:var(--serif);font-weight:600;font-size:18px;letter-spacing:-.01em;white-space:nowrap}
-.pl-tm .hd{}
-@media (max-width:780px){ .pl-brand{display:none} .pl-conn{max-width:150px} }
-@media (max-width:700px){ .pl-tm .hd{display:none} .pl-conn{max-width:130px;font-size:11px} }
-@media (max-height:360px){ .pl-tm b{font-size:12px} .pb{min-height:38px} .pb.arm{min-height:44px} .seg3 button{min-height:32px} }
+@media (max-width:700px){ .pl-conn{max-width:130px;font-size:11px} .pl-tm b{font-size:14px} .pl-tm em{font-size:9px} }
+@media (max-height:360px){ .pb{min-height:38px} .pb.main{min-height:54px} .pb.sub{min-height:42px} .seg3 button{min-height:32px} }
 `;
 const PILOT_HTML = `
 <div class="pl">
   <div class="pl-top">
-    <span class="pl-brand">H12 Pilot</span>
     <span class="pl-conn" id="pConn"><i></i><span id="pConnT">Connecting</span></span>
     <div class="pl-tm" id="pTm">
-      <div><em>Alt</em><b id="tAlt">0.0 m</b></div><div><em>Speed</em><b id="tSpd">0.0 m/s</b></div><div class="hd"><em>Heading</em><b id="tHdg">000°</b></div>
-      <div><em>Home</em><b id="tDist">0 m</b></div><div id="tBattBox"><em>Battery</em><b id="tBatt">--%</b></div><div><em>Mode</em><b id="tMode">--</b></div>
+      <div id="tBattBox"><em>Battery</em><b id="tBatt">--%</b></div><div><em>Alt</em><b id="tAlt">0.0 m</b></div><div><em>Mode</em><b id="tMode">--</b></div>
     </div>
     <button class="pl-gear" id="pGear" type="button" aria-label="Settings">⚙</button>
   </div>
@@ -908,17 +910,9 @@ const PILOT_HTML = `
   <div class="pl-main">
     <div class="pad" id="padL" aria-label="Left stick"><span class="lab t" id="labL1">Throttle</span><span class="tick" id="tickL"></span><span class="knob"></span><span class="lab b" id="labL2">Yaw</span></div>
     <div class="pl-mid">
-      <button class="pb arm" id="bArm" type="button">Hold 2 s to arm<i></i></button>
-      <div class="row3">
-        <button class="pb" id="bTake" type="button">Take off</button>
-        <button class="pb" id="bLand" type="button">Land</button>
-        <button class="pb" id="bRth" type="button">Return home</button>
-      </div>
-      <div class="row2 sp">
-        <button class="pb on" id="bAlt" type="button" aria-pressed="true">Alt hold</button>
-        <div class="seg3" id="bSpeed" role="radiogroup" aria-label="Speed mode"><button type="button" data-s="cine">Cine</button><button type="button" data-s="normal" class="on">Normal</button><button type="button" data-s="sport">Sport</button></div>
-      </div>
-      <button class="pb stop" id="bStop" type="button">EMERGENCY STOP</button>
+      <button class="pb main hold dim" id="bMain" type="button"><span>Hold to arm</span><i></i></button>
+      <button class="pb sub" id="bSub" type="button" hidden><span>Return home</span><i></i></button>
+      <button class="pb stop" id="bStop" type="button" hidden>EMERGENCY STOP</button>
     </div>
     <div class="pad" id="padR" aria-label="Right stick"><span class="lab t" id="labR1">Pitch</span><span class="tick" id="tickR" hidden></span><span class="knob"></span><span class="lab b" id="labR2">Roll</span></div>
   </div>
@@ -927,6 +921,11 @@ const PILOT_HTML = `
   <div class="pl-head"><h2>Settings</h2><button class="pl-x" id="sX" type="button" aria-label="Close settings">✕ Close</button></div>
   <div class="pl-cols">
     <div class="pl-col">
+      <h3>Flight</h3>
+      <label>Speed <span class="seg3" style="width:62%" id="bSpeed" role="radiogroup" aria-label="Speed mode"><button type="button" data-s="cine">Cine</button><button type="button" data-s="normal" class="on">Normal</button><button type="button" data-s="sport">Sport</button></span></label>
+      <label>Altitude hold <span class="pl-sw"><input type="checkbox" id="sAh" checked><span></span></span></label>
+      <p id="sData">Speed 0.0 m/s, heading 000°, 0 m from home</p>
+      <h3>Sticks</h3>
       <label>Stick mode <span class="seg3" style="width:55%;grid-template-columns:1fr 1fr" id="sMode"><button type="button" data-m="2" class="on">Mode 2</button><button type="button" data-m="1">Mode 1</button></span></label>
       <p id="sModeNote">Mode 2: left stick throttle and yaw, right stick pitch and roll.</p>
       <label>Sensitivity <input type="range" id="sSens" min="30" max="100" step="5" value="100"></label>
@@ -934,6 +933,7 @@ const PILOT_HTML = `
       <label>Haptic feedback <span class="pl-sw"><input type="checkbox" id="sHap" checked><span></span></span></label>
     </div>
     <div class="pl-col">
+      <h3>More</h3>
       <label>Tilt control (pitch and roll) <span class="pl-sw"><input type="checkbox" id="sTilt"><span></span></span></label>
       <p id="sTiltNote">Tilt the phone forward, back and sideways. Hold it level and tap Calibrate first.</p>
       <div class="row2"><button class="pb" id="sCal" type="button">Calibrate tilt</button><button class="pb" id="sFull" type="button">Full screen</button></div>
@@ -1080,22 +1080,48 @@ function pilotMain(code) {
   }
   const now = () => performance.now();
 
-  // ---------- buttons ----------
-  const bArm = q('#bArm'), bar = bArm.querySelector('i');
-  const armDown = (e) => { e.preventDefault(); try { bArm.setPointerCapture(e.pointerId); } catch (x) {} P.armHold = { t0: now(), id: e.pointerId, fired: false }; buzz(10); };
-  const armUp = () => { if (P.armHold && !P.armHold.fired) toast('Hold for 2 seconds'); P.armHold = null; bar.style.width = '0'; };
-  bArm.addEventListener('pointerdown', armDown); bArm.addEventListener('pointerup', armUp); bArm.addEventListener('pointercancel', armUp);
+  // ---------- buttons: one main action that follows the flight state ----------
+  const AIR = new Set(['Flying', 'Taking off', 'Landing', 'Return', 'Hold', 'E-stop']);
+  const ACT = { arm: ['Hold to arm', 'hold'], disarm: ['Hold to disarm', 'hold'], takeoff: ['Take off', 'tap'], land: ['Land', 'tap'], rth: ['Return home', 'tap'], none: ['Motors stopped', 'off'] };
+  const NAME = { arm: 'Arm', disarm: 'Disarm', takeoff: 'Take off', land: 'Land', rth: 'Return home' };
+  const btn = { main: q('#bMain'), sub: q('#bSub') }, cur = { main: 'arm', sub: null }, down = { main: null, sub: null };
+  let hold = null;
+  function plan(tm) {
+    if (!tm) return { main: 'arm', sub: null, stop: false, label: {} };
+    const ph = tm.ph || '', air = ph ? AIR.has(ph) : !/^(Disarmed|Armed)$/.test(tm.mode);
+    if (ph === 'E-stop') return { main: 'none', sub: null, stop: false, label: {} };
+    if (!air) return tm.armed ? { main: 'takeoff', sub: 'disarm', stop: true, label: {} } : { main: 'arm', sub: null, stop: false, label: {} };
+    return { main: 'land', sub: 'rth', stop: true, label: { main: ph === 'Landing' ? 'Landing' : ph === 'Taking off' ? 'Land' : null, sub: ph === 'Return' ? 'Returning home' : null }, subAct: ph === 'Return', mainAct: ph === 'Landing' };
+  }
+  function drawActs() {
+    const tm = P.tm && now() - P.tmT < 1500 ? P.tm : null, pl = plan(tm);
+    for (const k of ['main', 'sub']) {
+      const b = btn[k], a = pl[k]; cur[k] = a; b.hidden = !a; if (!a) continue;
+      const [txt, kind] = ACT[a];
+      b.firstChild.textContent = pl.label[k] || txt;
+      b.className = 'pb ' + k + (kind === 'hold' ? ' hold' : (k === 'main' && a === 'takeoff') ? ' go' : '') + ((k === 'sub' && pl.subAct) || (k === 'main' && pl.mainAct) ? ' act' : '') + (!tm || kind === 'off' ? ' dim' : '');
+    }
+    q('#bStop').hidden = !pl.stop;
+  }
+  for (const k of ['main', 'sub']) {
+    const b = btn[k], bar = b.querySelector('i');
+    b.addEventListener('pointerdown', (e) => {
+      e.preventDefault(); down[k] = cur[k];
+      if (cur[k] && ACT[cur[k]][1] === 'hold') { try { b.setPointerCapture(e.pointerId); } catch (x) {} hold = { k, act: cur[k], t0: now(), fired: false, bar }; buzz(10); }
+    });
+    const up = () => { if (hold && hold.k === k) { if (!hold.fired) toast('Keep holding for 2 seconds'); hold.bar.style.width = '0'; hold = null; } };
+    b.addEventListener('pointerup', up); b.addEventListener('pointercancel', up);
+    // a tap only counts if the button showed the same tap action when the finger went down
+    b.addEventListener('click', (e) => { e.preventDefault(); const a = cur[k]; if (!a || a !== down[k] || ACT[a][1] !== 'tap') return; cmd(a, null, NAME[a]); });
+  }
   setInterval(() => {
-    if (!P.armHold || P.armHold.fired) return;
-    const f = Math.min(1, (now() - P.armHold.t0) / 2000); bar.style.width = (f * 100) + '%';
-    if (f >= 1) { P.armHold.fired = true; bar.style.width = '0'; const armed = P.tm && P.tm.armed; cmd(armed ? 'disarm' : 'arm', null, armed ? 'Disarm' : 'Arm'); buzz([30, 40, 60]); }
+    if (!hold || hold.fired) return;
+    const f = Math.min(1, (now() - hold.t0) / 2000); hold.bar.style.width = (f * 100) + '%';
+    if (f >= 1) { hold.fired = true; hold.bar.style.width = '0'; cmd(hold.act, null, NAME[hold.act]); buzz([30, 40, 60]); }
   }, 30);
   const tap = (sel, fn) => q(sel).addEventListener('click', (e) => { e.preventDefault(); fn(); });
-  tap('#bTake', () => cmd('takeoff', null, 'Take off'));
-  tap('#bLand', () => cmd('land', null, 'Land'));
-  tap('#bRth', () => cmd('rth', null, 'Return home'));
-  tap('#bAlt', () => { S.ah = !S.ah; S.ahT = now(); buzz(12); toast(S.ah ? 'Altitude hold on' : 'Altitude hold off: manual throttle'); });
   q('#bSpeed').addEventListener('click', (e) => { const b = e.target.closest('button'); if (!b) return; S.sm = b.dataset.s; S.smT = now(); buzz(12); });
+  const sAh = q('#sAh'); sAh.addEventListener('change', () => { S.ah = sAh.checked; S.ahT = now(); buzz(12); toast(S.ah ? 'Altitude hold on' : 'Altitude hold off: manual throttle'); });
   tap('#bStop', () => { q('#pConfirm').hidden = false; buzz([30, 30, 30]); });
   tap('#cNo', () => { q('#pConfirm').hidden = true; });
   tap('#cYes', () => { q('#pConfirm').hidden = true; cmd('estop', null, 'Emergency stop'); buzz(200); });
@@ -1135,7 +1161,7 @@ function pilotMain(code) {
     const conn = q('#pConn'), ct = q('#pConnT');
     let cls = '', txt = 'Connecting';
     if (!P.code) txt = 'Enter code';
-    else if (age < 1500) { cls = 'ok'; txt = `Connected${P.rtt != null ? ' · ' + P.rtt + ' ms' : ''}`; }
+    else if (age < 1500) { cls = 'ok'; txt = P.rtt != null ? P.rtt + ' ms' : 'Connected'; }
     else if (P.tm) { cls = 'bad'; txt = 'Signal lost, reconnecting'; }
     else if (P.up.detail === 'unavailable') { cls = 'bad'; txt = 'Live link not available here'; }
     else if (P.up.detail === 'not_permitted') { cls = 'bad'; txt = 'Sign in as the page owner'; }
@@ -1148,12 +1174,13 @@ function pilotMain(code) {
     else if (tm && tm.rcLink === false) warn = 'H12 radio link lost (check the distance slider)';
     W.textContent = warn; W.className = 'pl-warn' + (warn ? ' on' : '');
     if (tm) {
-      q('#tAlt').textContent = `${tm.alt.toFixed(1)} m`; q('#tSpd').textContent = `${tm.spd.toFixed(1)} m/s`; q('#tHdg').textContent = `${String(tm.hdg).padStart(3, '0')}°`;
-      q('#tDist').textContent = `${tm.dist} m`; q('#tBatt').textContent = `${tm.batt}%`; q('#tMode').textContent = tm.mode;
+      q('#tAlt').textContent = `${tm.alt.toFixed(1)} m`; q('#tBatt').textContent = `${tm.batt}%`;
+      q('#tMode').textContent = tm.mode + (S.sm !== 'normal' ? ', ' + (S.sm === 'cine' ? 'Cine' : 'Sport') : '');
       q('#tBattBox').className = tm.batt <= 15 ? 'crit' : tm.batt <= 30 ? 'low' : '';
-      bArm.firstChild.textContent = tm.armed ? 'Hold 2 s to disarm' : 'Hold 2 s to arm'; bArm.classList.toggle('armed', !!tm.armed);
+      q('#sData').textContent = `Speed ${tm.spd.toFixed(1)} m/s, heading ${String(tm.hdg).padStart(3, '0')}°, ${tm.dist} m from home`;
     }
-    q('#bAlt').classList.toggle('on', S.ah); q('#bAlt').setAttribute('aria-pressed', String(S.ah));
+    drawActs();
+    sAh.checked = S.ah;
     [...q('#bSpeed').children].forEach((b) => b.classList.toggle('on', b.dataset.s === S.sm));
   }, 50);
   applyLayout();
@@ -4039,7 +4066,7 @@ function sendTelemetry() {
   PH.link.sendState({
     seq: ++PH.tmSeq, alt: +(+T.altAGL || 0).toFixed(1), spd: +(+T.speed || 0).toFixed(1), hdg: Math.round(((+T.heading || 0) + 360) % 360),
     dist: Math.round(+T.dist || 0), batt: Math.round(+T.battPct || 0), mode: String(T.mode || ''), armed: !!T.armed,
-    ah: DEMO.altHold, sm: DEMO.speedMode, warn: T.demo ? DEMO.warn : '', fl: Math.round(+T.t || 0), demo: !!T.demo,
+    ah: DEMO.altHold, sm: DEMO.speedMode, warn: T.demo ? DEMO.warn : '', fl: Math.round(+T.t || 0), demo: !!T.demo, ph: DEMO.mode,
     rc: power.on && power.phase === 'on', rcLink: !link.lost, pong: PH.pong, acks: PH.acks,
   });
 }
