@@ -332,6 +332,10 @@ body.assigning #stage canvas{cursor:crosshair}
 
 #phoneAsk .report-body{display:grid;gap:12px}
 #phoneAsk .codein{font-size:26px;text-align:center;min-height:52px}
+
+.fastnote{margin:0 0 12px;padding:10px 12px;border-radius:10px;border:1px solid rgba(54,209,180,.45);background:rgba(54,209,180,.08);font-size:13px;line-height:1.45}
+.fastnote[hidden]{display:none}
+.fastnote a{color:#36d1b4;font-weight:600;word-break:break-all}
 </style></head><body>
 <div id="stage" aria-label="3D view of the H12 remote controller. Drag empty space to orbit, scroll or pinch to zoom. Drag the stick caps, click the switches, wheels and buttons, tap the screen."></div>
 <div id="labels" hidden></div>
@@ -403,6 +407,7 @@ body.assigning #stage canvas{cursor:crosshair}
     <details class="sec" id="secPhone" open>
       <summary><span class="idx">09</span>Phone controller</summary>
       <div class="sec-body">
+        <div class="fastnote" hidden><b>Want no delay?</b> This copy relays every stick move through claude.ai. Open the fast version on this computer and scan its QR code instead: <a class="fastlink" href="https://officialbrightmediausa-dev.github.io/h12/" target="_blank" rel="noopener">officialbrightmediausa-dev.github.io/h12</a></div>
         <div class="pairrow">
           <canvas id="qrSmall" width="148" height="148" aria-label="QR code to open the phone controller"></canvas>
           <div class="pairinfo">
@@ -688,6 +693,7 @@ body.assigning #stage canvas{cursor:crosshair}
   <div class="report-card" style="max-width:620px">
     <div class="report-head"><h2 id="pairTitle">Fly with your phone</h2><button class="iconbtn" id="closePair" type="button" aria-label="Close pairing screen">Close</button></div>
     <div class="report-body">
+      <div class="fastnote" hidden><b>Want no delay?</b> This copy relays every stick move through claude.ai. Open the fast version on this computer and scan its QR code instead: <a class="fastlink" href="https://officialbrightmediausa-dev.github.io/h12/" target="_blank" rel="noopener">officialbrightmediausa-dev.github.io/h12</a></div>
       <div class="pairbig">
         <canvas id="qrBig" width="300" height="300" aria-label="QR code to open the phone controller"></canvas>
         <div>
@@ -735,6 +741,7 @@ body.assigning #stage canvas{cursor:crosshair}
    echoed in the telemetry. Hosted anywhere else it falls back to PeerJS (WebRTC).
    ========================================================= */
 const ARTIFACT_URL = 'https://claude.ai/artifact/9k2TDtaegrEStdAQveLQLR';
+const FAST_URL = 'https://officialbrightmediausa-dev.github.io/h12/';   // self-hosted copy: direct WebRTC, no claude.ai relay
 const PILOT_HASH = /^#pilot(?:-(\d{6}))?$/i;
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const loadScript = (src) => new Promise((res, rej) => { const s = document.createElement('script'); s.src = src; s.async = true; s.onload = res; s.onerror = () => rej(new Error('load failed: ' + src)); document.head.appendChild(s); });
@@ -4003,10 +4010,13 @@ PHONE.qrFor = store.get('qrFor', 'ios');
 // The x-safari-https form (iOS 17 and later) opens the link in Safari instead.
 function qrText() { const u = pilotUrl(); return PHONE.qrFor === 'ios' && PHONE.kind !== 'peerjs' ? u.replace(/^https:\/\//, 'x-safari-https://') : u; }
 function pairSteps() {
-  const ios = PHONE.qrFor === 'ios';
-  $('#pairSteps').innerHTML = ios
-    ? '<li>Point the iPhone Camera at the QR code and tap <b>Open in Safari</b>.</li><li>Sign in to claude.ai in Safari once if asked (same account). If you land on the 3D page, type the code shown here.</li><li>Turn the phone sideways. The status turns green when connected.</li>'
-    : '<li>Point the phone camera at the QR code and tap the link (not Search).</li><li>Sign in to claude.ai with this same account if asked. If you land on the 3D page, type the code shown here.</li><li>Turn the phone sideways. The status turns green when connected.</li>';
+  const ios = PHONE.qrFor === 'ios', fast = PHONE.kind === 'peerjs';
+  $$('.fastnote').forEach((e) => { e.hidden = PHONE.kind !== 'room'; });
+  $('#pairSteps').innerHTML = fast
+    ? '<li>Connect the phone to the same Wi-Fi as this computer.</li>' + (ios ? '<li>Point the iPhone Camera at the QR code and tap the link. It opens in Safari.</li>' : '<li>Point the phone camera at the QR code and tap the link (not Search).</li>') + '<li>Turn the phone sideways. The status turns green when connected.</li>'
+    : ios
+      ? '<li>Point the iPhone Camera at the QR code and tap <b>Open in Safari</b>.</li><li>Sign in to claude.ai in Safari once if asked (same account). If you land on the 3D page, type the code shown here.</li><li>Turn the phone sideways. The status turns green when connected.</li>'
+      : '<li>Point the phone camera at the QR code and tap the link (not Search).</li><li>Sign in to claude.ai with this same account if asked. If you land on the 3D page, type the code shown here.</li><li>Turn the phone sideways. The status turns green when connected.</li>';
 }
 function pilotUrl() { return (PHONE.kind === 'peerjs' ? location.origin + location.pathname : ARTIFACT_URL) + '#pilot-' + PHONE.code; }
 
@@ -4125,6 +4135,12 @@ $('#phJoin').addEventListener('click', () => { const c = $('#phJoinCode').value.
 { const r = document.querySelector(`input[name=qrfor][value=${PHONE.qrFor}]`); if (r) r.checked = true; }
 $$('input[name=qrfor]').forEach((i) => i.addEventListener('change', () => { PHONE.qrFor = i.value; store.set('qrFor', i.value); drawQR(); }));
 pairSteps();
+// the claude.ai viewer may block new windows: fall back to copying the address
+$$('.fastlink').forEach((a) => a.addEventListener('click', (e) => {
+  e.preventDefault(); let w = null;
+  try { w = window.open(FAST_URL, '_blank'); if (w) w.opener = null; } catch (x) { w = null; }
+  if (!w) { try { navigator.clipboard.writeText(FAST_URL).then(() => hooks.toast('Address copied. Paste it into a new browser tab.'), () => hooks.toast(FAST_URL)); } catch (x) { hooks.toast(FAST_URL); } }
+}));
 $('#pairCopy').addEventListener('click', () => {
   const done = (m) => { $('#pairCopied').textContent = m; setTimeout(() => { $('#pairCopied').textContent = ''; }, 2500); };
   try { navigator.clipboard.writeText(pilotUrl()).then(() => done('Link copied'), () => done(pilotUrl())); } catch (e) { done(pilotUrl()); }
