@@ -405,7 +405,7 @@ body.assigning #stage canvas{cursor:crosshair}
   </div>
   <div class="panel-body">
     <details class="sec" id="secPhone" open>
-      <summary><span class="idx">09</span>Phone controller</summary>
+      <summary><span class="idx">01</span>Phone controller</summary>
       <div class="sec-body">
         <div class="fastnote" hidden><b>Want no delay?</b> This copy relays every stick move through claude.ai. Open the fast version on this computer and scan its QR code instead: <a class="fastlink" href="https://officialbrightmediausa-dev.github.io/h12/" target="_blank" rel="noopener">officialbrightmediausa-dev.github.io/h12</a></div>
         <div class="pairrow">
@@ -445,7 +445,7 @@ body.assigning #stage canvas{cursor:crosshair}
       </div>
     </details>
     <details class="sec" id="secView" open>
-      <summary><span class="idx">01</span>View</summary>
+      <summary><span class="idx">02</span>View</summary>
       <div class="sec-body">
         <div class="grid3">
           <button class="btn" type="button" data-view="threeq">3/4</button>
@@ -466,7 +466,7 @@ body.assigning #stage canvas{cursor:crosshair}
     </details>
 
     <details class="sec" id="secPower" open>
-      <summary><span class="idx">02</span>Power and screen</summary>
+      <summary><span class="idx">03</span>Power and screen</summary>
       <div class="sec-body">
         <button class="btn primary holdbtn" type="button" id="pHold">Hold 4 s to power on<i></i></button>
         <div class="status"><span id="pState">Off</span><span id="pBatt">85%</span></div>
@@ -485,7 +485,7 @@ body.assigning #stage canvas{cursor:crosshair}
     </details>
 
     <details class="sec" id="secInput">
-      <summary><span class="idx">03</span>Input</summary>
+      <summary><span class="idx">04</span>Input</summary>
       <div class="sec-body">
         <div class="fieldlabel">Active sources</div>
         <div class="grid2">
@@ -544,7 +544,7 @@ body.assigning #stage canvas{cursor:crosshair}
     </details>
 
     <details class="sec" id="secCh" open>
-      <summary><span class="idx">04</span>Channels</summary>
+      <summary><span class="idx">05</span>Channels</summary>
       <div class="sec-body">
         <div class="chbars" id="chBars"></div>
         <div class="status"><span id="chState">Receiver output</span><span id="chRate">50 Hz</span></div>
@@ -563,7 +563,7 @@ body.assigning #stage canvas{cursor:crosshair}
     </details>
 
     <details class="sec" id="secLink">
-      <summary><span class="idx">05</span>Link</summary>
+      <summary><span class="idx">06</span>Link</summary>
       <div class="sec-body">
         <div class="rxcard">
           <div class="rxbox"><span class="nm">R12</span><span class="led g" id="ledG"></span><span class="led r" id="ledR"></span><span class="dim">51×41×13 mm</span></div>
@@ -601,7 +601,7 @@ body.assigning #stage canvas{cursor:crosshair}
     </details>
 
     <details class="sec" id="secHw">
-      <summary><span class="idx">06</span>Hardware</summary>
+      <summary><span class="idx">07</span>Hardware</summary>
       <div class="sec-body">
         <div class="fieldlabel">Left antenna (ANT1)</div>
         <div class="row"><label for="aLf" class="fieldlabel" style="flex:1">Fold</label><span class="val" id="aLfVal">45°</span></div>
@@ -637,7 +637,7 @@ body.assigning #stage canvas{cursor:crosshair}
     </details>
 
     <details class="sec" id="secDisplay">
-      <summary><span class="idx">07</span>Display</summary>
+      <summary><span class="idx">08</span>Display</summary>
       <div class="sec-body">
         <div>
           <div class="fieldlabel" style="margin-bottom:6px">Rendering</div>
@@ -659,7 +659,7 @@ body.assigning #stage canvas{cursor:crosshair}
     </details>
 
     <details class="sec" id="secSpecs">
-      <summary><span class="idx">08</span>Specs and report</summary>
+      <summary><span class="idx">09</span>Specs and report</summary>
       <div class="sec-body">
         <table class="rpmtable" aria-label="Key specs"><tbody id="specMini"></tbody></table>
         <p class="note warn"><strong>Conflicts, verify:</strong> RF power 23 dBm (manual) vs -0.58 dBm conducted (FCC). Antenna 3 dB (manual) vs 1.0 dBi (FCC). Battery 1000 mAh in the FCC report text is a typo for 10,000 mAh.</p>
@@ -958,7 +958,7 @@ const PILOT_HTML = `
 <div class="pl-rot"><h2>Turn your phone sideways</h2><p>The controller works in landscape.</p></div>
 <div class="pl-join" id="pJoin" hidden><div class="pl-card">
   <h2>H12 Pilot</h2>
-  <p>Enter the 6-digit code shown on the H12 page on your computer (section 09, Phone controller).</p>
+  <p>Enter the 6-digit code shown on the H12 page on your computer (section 01, Phone controller).</p>
   <input id="jCode" inputmode="numeric" maxlength="6" autocomplete="one-time-code" placeholder="000000" aria-label="Pairing code">
   <button class="pb on" id="jGo" type="button">Connect</button>
 </div></div>
@@ -2593,7 +2593,7 @@ function vehicleStep(dt) {
     T.battPct = DEMO.batt; T.battV = 44.4 + 6 * DEMO.batt / 100;
   }
 }
-hooks.vehicleStep = vehicleStep;
+hooks.vehicleStep = (dt) => { vehicleStep(dt); filesStep(); };   // the Files app records every flight
 hooks.vehKey = (name) => { const c = name === 'armtoggle' ? (DEMO.armed ? 'disarm' : 'arm') : name; const r = vehCommand(c); flash(r.msg, !r.ok); hooks.toast(r.msg, !r.ok); };
 function demoFeedDraw(dt) { if (!DEMO.on) return; DEMO.acc += dt; if (DEMO.acc < 1 / 30) return; DEMO.acc = 0; drawDemoFrame(); }
 function drawDemoFrame() {
@@ -2853,6 +2853,12 @@ function pageVideo() {
   drawVideo(0, 56, 1800, 1024); statusBar(false);
   if (!VIDEO.src) button(660, 860, 480, 100, 'Start demo feed', () => setDemoFeed(true), { on: true, size: 34 });
   else if (DEMO.on) button(1500, 980, 260, 76, 'Stop demo', () => setDemoFeed(false), { fill: 'rgba(0,0,0,0.6)', size: 28 });
+  if (VIDEO.src) {   // camera button: saves a photo to Files
+    const sx = 1680, sy = 568; c.beginPath(); c.arc(sx, sy, 62, 0, Math.PI * 2); c.fillStyle = 'rgba(0,0,0,0.45)'; c.fill(); c.lineWidth = 6; c.strokeStyle = '#fff'; c.stroke();
+    c.beginPath(); c.arc(sx, sy, 46, 0, Math.PI * 2); c.fillStyle = '#eef0f2'; c.fill(); txt('Photo', sx, sy + 96, { size: 24, w: 600, align: 'center' });
+    hit(sx - 80, sy - 80, 160, 190, takePhoto);
+  }
+  if (UI.photoFlash > performance.now()) { c.fillStyle = 'rgba(255,255,255,0.55)'; c.fillRect(0, 56, 1800, 1024); UI.live = true; }
   rrect(30, 80, 90, 70, 14); c.fillStyle = 'rgba(0,0,0,0.5)'; c.fill(); c.strokeStyle = '#fff'; c.lineWidth = 6; c.beginPath(); c.moveTo(88, 115); c.lineTo(60, 115); c.moveTo(72, 101); c.lineTo(58, 115); c.lineTo(72, 129); c.stroke(); hit(20, 70, 120, 100, () => goBack());
 }
 const ADV_TABS = [['map', 'Channel map'], ['ep', 'Reverse, endpoints'], ['sub', 'Subtrim'], ['expo', 'Expo, deadband'], ['fs', 'Failsafe'], ['ctl', 'Buttons, wheels'], ['rx', 'Receiver'], ['sig', 'Signal'], ['fw', 'Stick firmware']];
@@ -3036,10 +3042,291 @@ function pageSettings() {
   txt('About', 1220, 270, { size: 34, w: 700 });
   [['Model', 'H12'], ['Software', 'V1.2.3 (placeholder)'], ['FCC ID', '2ATGZQZYZH12'], ['Display', '5.5 in, 1920 × 1080'], ['Channels', '12, 2.4 GHz FHSS'], ['Battery', `${Math.round(power.battery)}%${state.charging ? ', charging' : ''}`]].forEach(([k, v], i) => { txt(k, 1220, 340 + i * 62, { size: 26, color: COL.mut }); txt(v, 1420, 340 + i * 62, { size: 26, mono: true }); });
 }
+/* ---------- Files app: flight logs (recorded automatically) and photos (Video app shutter) ----------
+   Every flight from arming to disarming is logged: track, altitude, speed, distance, battery, mode changes
+   and warnings, and which input flew it. Photos come from the camera feed in the Video app.
+   Kept in this browser (localStorage) when it allows; otherwise until the page is closed. */
+const FILES = { logs: [], photos: [], persist: true, cur: null, imgs: new Map() };
+const FILES_KEY = 'h12.files.v1', MAX_LOGS = 30, MAX_PHOTOS = 24, MAX_TRACK = 1800, MAX_EVENTS = 200;
+UI.files = { tab: 'logs', page: 0, sel: null, view: 'summary', evPage: 0, ask: null, photo: 0 };
+function filesLoad() {
+  try {
+    const s = localStorage.getItem(FILES_KEY);
+    if (s) { const d = JSON.parse(s); FILES.logs = Array.isArray(d.logs) ? d.logs : []; FILES.photos = Array.isArray(d.photos) ? d.photos : []; }
+  } catch (e) { FILES.persist = false; }
+}
+function filesSave() {
+  if (!FILES.persist) return;
+  const put = () => localStorage.setItem(FILES_KEY, JSON.stringify({ logs: FILES.logs, photos: FILES.photos }));
+  try { put(); } catch (e) {
+    // storage full: drop the oldest photos until it fits
+    while (FILES.photos.length) { FILES.photos.pop(); try { put(); flash('Storage full: oldest photo removed', true); return; } catch (e2) { /* keep dropping */ } }
+    FILES.persist = false;
+  }
+}
+filesLoad();
+const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'], MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+function fmtDate(ms) { const d = new Date(ms); return `${DAYS[d.getDay()]} ${d.getDate()} ${MONTHS[d.getMonth()]}, ${d.getHours()}:${String(d.getMinutes()).padStart(2, '0')}`; }
+function fmtDur(s) { s = Math.round(s); return s < 60 ? `${s} s` : `${Math.floor(s / 60)} min ${String(s % 60).padStart(2, '0')} s`; }
+function fmtClock(s) { s = Math.max(0, Math.round(s)); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; }
+function fmtDist(m) { return m < 1000 ? `${Math.round(m)} m` : `${(m / 1000).toFixed(2)} km`; }
+function srcName(o) {
+  if (!o) return null;
+  if (o === 'phone') return 'Phone app';
+  if (o === 'joy') return PH.monT && IO.t - PH.monT < 2 ? 'RC on USB (SkyVision RC app linked)' : 'RC on USB';
+  if (o.startsWith('gp')) return 'Gamepad';
+  if (o === 'key') return 'Keyboard';
+  return 'Sticks on the model';
+}
+
+/* recorder, called after every vehicle step */
+function filesStep() {
+  let L = FILES.cur;
+  if (!L && DEMO.armed) {
+    L = FILES.cur = { id: 'f' + Date.now().toString(36), start: Date.now(), t0: DEMO.t, ft0: DEMO.flightT, battStart: DEMO.batt, events: [], track: [],
+      maxAlt: 0, maxDist: 0, maxSpd: 0, flown: 0, sources: [], photos: 0, flags: {}, lastLabel: 'Armed', lastWarn: '', sampT: -1, px: DEMO.x, py: DEMO.y };
+    L.events.push([0, 'Armed']);
+  }
+  if (!L) return;
+  const t = DEMO.t - L.t0, label = vehModeLabel();
+  if (label !== L.lastLabel) { L.events.push([+t.toFixed(1), label + (DEMO.why && AIRBORNE.has(DEMO.mode) ? ` (${DEMO.why})` : '')]); L.lastLabel = label; }
+  if (DEMO.warn !== L.lastWarn) { if (DEMO.warn) L.events.push([+t.toFixed(1), DEMO.warn]); L.lastWarn = DEMO.warn; }
+  if (L.events.length > MAX_EVENTS) L.events.splice(1, L.events.length - MAX_EVENTS);
+  if (DEMO.mode === 'E-stop') L.flags.estop = true;
+  if (DEMO.why === 'failsafe') L.flags.failsafe = true;
+  if (DEMO.why === 'low battery' || DEMO.why === 'battery empty') L.flags.lowbatt = true;
+  const air = AIRBORNE.has(DEMO.mode);
+  L.maxAlt = Math.max(L.maxAlt, DEMO.alt); L.maxDist = Math.max(L.maxDist, Math.hypot(DEMO.x, DEMO.y)); L.maxSpd = Math.max(L.maxSpd, Math.hypot(DEMO.vx, DEMO.vy));
+  L.flown += Math.hypot(DEMO.x - L.px, DEMO.y - L.py); L.px = DEMO.x; L.py = DEMO.y;
+  if (air) for (const ax of ['LY', 'RY', 'RX', 'LX']) { const n = srcName(mech.owner[ax]); if (n && !L.sources.includes(n)) L.sources.push(n); }
+  if (t - L.sampT >= 1) {
+    L.sampT = t; L.track.push([Math.round(t), +DEMO.x.toFixed(1), +DEMO.y.toFixed(1), +DEMO.alt.toFixed(1), +Math.hypot(DEMO.vx, DEMO.vy).toFixed(1), Math.round(DEMO.batt)]);
+    if (L.track.length > MAX_TRACK) L.track = L.track.filter((_, i) => i % 2 === 0);   // long flights: keep every other sample
+  }
+  if (!DEMO.armed && DEMO.mode === 'Landed') {
+    FILES.cur = null;
+    const air = DEMO.flightT - L.ft0;
+    if (air < 1) return;   // armed and disarmed without taking off: nothing to keep
+    const log = { id: L.id, start: L.start, end: Date.now(), airT: +air.toFixed(1), armT: +t.toFixed(1), maxAlt: +L.maxAlt.toFixed(1), maxDist: +L.maxDist.toFixed(1),
+      maxSpd: +L.maxSpd.toFixed(1), flown: +L.flown.toFixed(1), battStart: Math.round(L.battStart), battEnd: Math.round(DEMO.batt), sources: L.sources, photos: L.photos,
+      result: L.flags.estop ? 'Emergency stop' : L.flags.failsafe ? 'Failsafe' : L.flags.lowbatt ? 'Low battery' : 'Normal', events: L.events, track: L.track };
+    const last = log.events[log.events.length - 1];
+    if (last && last[1] === 'Disarmed') last[1] = 'Disarmed, log saved'; else log.events.push([+t.toFixed(1), 'Disarmed, log saved']);
+    FILES.logs.unshift(log); if (FILES.logs.length > MAX_LOGS) FILES.logs.length = MAX_LOGS;
+    if (UI.files.sel === 'cur') UI.files.sel = log.id;   // the open live view becomes the saved log
+    filesSave(); UI.dirty = true;
+  }
+}
+function curLogView() {
+  const L = FILES.cur; if (!L) return null;
+  return { id: 'cur', live: true, start: L.start, airT: DEMO.flightT - L.ft0, armT: DEMO.t - L.t0, maxAlt: L.maxAlt, maxDist: L.maxDist, maxSpd: L.maxSpd, flown: L.flown,
+    battStart: Math.round(L.battStart), battEnd: Math.round(DEMO.batt), sources: L.sources, photos: L.photos, result: 'Recording', events: L.events, track: L.track.concat([[Math.round(DEMO.t - L.t0), DEMO.x, DEMO.y, DEMO.alt, 0, DEMO.batt]]) };
+}
+
+/* photos from the camera feed */
+function takePhoto() {
+  const s = VIDEO.src; const sw = s && (s.videoWidth || s.width), sh = s && (s.videoHeight || s.height);
+  if (!sw || !sh) { flash('No video to photograph', true); return; }
+  const W = 640, H = Math.round(W * sh / sw), cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+  let data;
+  try { cv.getContext('2d').drawImage(s, 0, 0, W, H); data = cv.toDataURL('image/jpeg', 0.82); } catch (e) { flash('This video source cannot be saved', true); return; }
+  FILES.photos.unshift({ id: 'p' + Date.now().toString(36), t: Date.now(), data, w: W, h: H, alt: +DEMO.alt.toFixed(1), x: +DEMO.x.toFixed(1), y: +DEMO.y.toFixed(1), hdg: Math.round(DEMO.hdg), mode: vehModeLabel() });
+  if (FILES.photos.length > MAX_PHOTOS) FILES.photos.length = MAX_PHOTOS;
+  if (FILES.cur) { FILES.cur.photos++; FILES.cur.events.push([+(DEMO.t - FILES.cur.t0).toFixed(1), 'Photo taken']); }
+  filesSave(); UI.photoFlash = performance.now() + 160; sound.beep(1800, 0.05, 0, 0.05); flash('Photo saved to Files');
+}
+function photoImg(p) {
+  let im = FILES.imgs.get(p.id);
+  if (!im) { im = new Image(); im.onload = () => { UI.dirty = true; }; im.src = p.data; FILES.imgs.set(p.id, im); }
+  return im.complete && im.naturalWidth ? im : null;
+}
+// inside claude.ai files are saved through the downloads capability (the viewer confirms); elsewhere with a plain download
+let DOWNLOADS = null;
+(async () => {
+  for (let i = 0; i < 20 && !(window.claude && typeof window.claude.use === 'function'); i++) await new Promise((r) => setTimeout(r, 100));
+  try { if (window.claude && typeof window.claude.use === 'function') DOWNLOADS = await window.claude.use('downloads'); } catch (e) { DOWNLOADS = null; }
+})();
+function dataUrlBlob(u) {
+  const i = u.indexOf(','), bin = atob(u.slice(i + 1)), a = new Uint8Array(bin.length);
+  for (let k = 0; k < bin.length; k++) a[k] = bin.charCodeAt(k);
+  return new Blob([a], { type: (u.slice(0, i).match(/data:([^;]+)/) || [])[1] || 'application/octet-stream' });
+}
+function fileDownload(name, blob) {
+  if (DOWNLOADS) {
+    DOWNLOADS.save({ filename: name, data: blob }).then(() => flash('Saved ' + name), (e) => {
+      if (e && e.code === 'declined') return;
+      flash(e && e.code === 'rate_limited' ? 'A save is already waiting: answer it first' : 'Saving files is not available here', true);
+    });
+    return;
+  }
+  try {
+    const url = URL.createObjectURL(blob), a = document.createElement('a'); a.href = url; a.download = name; a.rel = 'noopener';
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 5000); flash('Downloaded ' + name);
+  } catch (e) { flash('Downloads are blocked here', true); }
+}
+function logCsv(L) {
+  const rows = [
+    '# SkyVision H12 simulator flight log', `# start,${new Date(L.start).toISOString()}`, `# in the air s,${L.airT}`, `# armed s,${L.armT}`,
+    `# max altitude m,${L.maxAlt}`, `# max distance from home m,${L.maxDist}`, `# distance flown m,${L.flown}`, `# top speed m/s,${L.maxSpd}`,
+    `# battery %,${L.battStart},${L.battEnd}`, `# flown with,${(L.sources || []).join(' / ')}`, `# result,${L.result}`,
+    'time_s,east_m,north_m,altitude_m,speed_m_s,battery_pct', ...L.track.map((r) => r.join(',')),
+    '', 'event_time_s,event', ...L.events.map((e) => `${e[0]},"${String(e[1]).replace(/"/g, "'")}"`),
+  ];
+  return rows.join('\n');
+}
+function exportLog(L) {
+  const d = new Date(L.start), name = `flight-${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}-${String(d.getHours()).padStart(2, '0')}${String(d.getMinutes()).padStart(2, '0')}.csv`;
+  fileDownload(name, new Blob([logCsv(L)], { type: 'text/csv' }));
+}
+function askConfirm(text, sub, okLabel, fn) { UI.files.ask = { text, sub, okLabel, fn }; UI.dirty = true; }
+function drawAsk() {
+  const A = UI.files.ask; if (!A) return;
+  const c = X(); c.fillStyle = 'rgba(0,0,0,0.6)'; c.fillRect(0, 0, 1800, 1080); hit(0, 0, 1800, 1080, () => {});
+  rrect(500, 340, 800, 380, 24); c.fillStyle = '#2b2d31'; c.fill();
+  txt(A.text, 900, 430, { size: 44, w: 700, align: 'center' }); txt(A.sub, 900, 500, { size: 28, color: COL.mut, align: 'center' });
+  button(560, 580, 320, 100, 'Cancel', () => { UI.files.ask = null; }, { size: 34 });
+  button(920, 580, 320, 100, A.okLabel, () => { const f = A.fn; UI.files.ask = null; f(); }, { fill: COL.bad, size: 34 });
+}
+function badge(x, y, text, color) {
+  const c = X(); c.font = `600 24px ${FONT}`; const w = c.measureText(text).width + 40;
+  rrect(x - w, y - 22, w, 44, 22); c.fillStyle = color; c.fill(); txt(text, x - w / 2, y, { size: 24, w: 600, align: 'center', color: '#fff' });
+}
+const RESULT_COL = { Normal: COL.ok, Failsafe: COL.warn, 'Low battery': COL.warn, 'Emergency stop': COL.bad, Recording: COL.bad };
+function pager(n, per, onPage) {
+  const F = UI.files, pages = Math.max(1, Math.ceil(n / per)); F.page = Math.min(F.page, pages - 1);
+  if (pages > 1) {
+    button(40, 1000, 200, 64, 'Prev', () => { F.page = Math.max(0, F.page - 1); onPage && onPage(); }, { size: 28, color: F.page ? COL.fg : COL.mut });
+    txt(`Page ${F.page + 1} of ${pages}`, 380, 1032, { size: 26, color: COL.mut, align: 'center' });
+    button(520, 1000, 200, 64, 'Next', () => { F.page = Math.min(pages - 1, F.page + 1); onPage && onPage(); }, { size: 28, color: F.page < pages - 1 ? COL.fg : COL.mut });
+  }
+}
 function pageFiles() {
   const c = X(); c.fillStyle = COL.bg; c.fillRect(0, 0, 1800, 1080); statusBar(false); header('Files');
-  txt('No files', 900, 520, { size: 40, w: 600, align: 'center', color: COL.mut }); txt('File browsing is a stub in this mock.', 900, 590, { size: 28, align: 'center', color: COL.mut });
+  const F = UI.files, cur = curLogView();
+  const nLogs = FILES.logs.length + (cur ? 1 : 0);
+  [['logs', `Flight logs (${nLogs})`], ['photos', `Photos (${FILES.photos.length})`]].forEach(([k, l], i) => button(40 + i * 420, 176, 400, 76, l, () => { F.tab = k; F.page = 0; }, { on: F.tab === k, size: 30 }));
+  const bytes = FILES.persist ? (() => { try { return (localStorage.getItem(FILES_KEY) || '').length; } catch (e) { return 0; } })() : 0;
+  txt(FILES.persist ? `Saved in this browser, ${Math.max(1, Math.round(bytes / 1024))} KB` : 'Not saved after closing: browser storage is off', 1760, 214, { size: 24, color: COL.mut, align: 'right' });
+  if (F.tab === 'logs') {
+    const list = (cur ? [cur] : []).concat(FILES.logs);
+    if (!list.length) {
+      c.strokeStyle = COL.mut; c.lineWidth = 5; c.beginPath(); c.moveTo(840, 430); c.lineTo(960, 430); c.lineTo(960, 560); c.lineTo(840, 560); c.closePath(); c.stroke();
+      [460, 492, 524].forEach((y) => { c.beginPath(); c.moveTo(862, y); c.lineTo(938, y); c.stroke(); });
+      txt('No flights yet', 900, 640, { size: 40, w: 600, align: 'center' });
+      txt('Arm and take off: every flight is recorded here automatically.', 900, 700, { size: 28, color: COL.mut, align: 'center' });
+    }
+    const per = 6, rows = list.slice(F.page * per, F.page * per + per);
+    rows.forEach((L, i) => {
+      const y = 276 + i * 120;
+      rrect(40, y, 1720, 106, 16); c.fillStyle = '#3a3d42'; c.fill();
+      txt(fmtDate(L.start), 80, y + 34, { size: 32, w: 600 });
+      txt(`${fmtDur(L.airT)} in the air   ·   max ${L.maxAlt.toFixed(1)} m high   ·   ${fmtDist(L.maxDist)} out   ·   ${fmtDist(L.flown)} flown${L.photos ? `   ·   ${L.photos} photo${L.photos > 1 ? 's' : ''}` : ''}`, 80, y + 76, { size: 26, color: COL.mut });
+      badge(1690, y + 53, L.result, RESULT_COL[L.result] || COL.btn);
+      c.strokeStyle = COL.mut; c.lineWidth = 5; c.beginPath(); c.moveTo(1718, y + 40); c.lineTo(1732, y + 53); c.lineTo(1718, y + 66); c.stroke();
+      hit(40, y, 1720, 106, () => { F.sel = L.id; F.view = 'summary'; F.evPage = 0; openPage('files.log'); });
+    });
+    pager(list.length, per);
+    if (FILES.logs.length) button(1460, 1000, 300, 64, 'Delete all logs', () => askConfirm('Delete all flight logs?', `${FILES.logs.length} saved flight${FILES.logs.length > 1 ? 's' : ''} will be removed.`, 'Delete all', () => { FILES.logs = []; filesSave(); flash('Flight logs deleted'); }), { size: 26, color: COL.bad });
+  } else {
+    const P = FILES.photos;
+    if (!P.length) {
+      c.strokeStyle = COL.mut; c.lineWidth = 5; rrect(820, 440, 160, 112, 16); c.stroke(); c.beginPath(); c.arc(900, 496, 30, 0, Math.PI * 2); c.stroke();
+      txt('No photos yet', 900, 640, { size: 40, w: 600, align: 'center' });
+      txt('Open the Video app and tap the round camera button.', 900, 700, { size: 28, color: COL.mut, align: 'center' });
+      button(720, 760, 360, 84, 'Open Video', () => openPage('video'), { on: true, size: 30 });
+    }
+    const per = 8, tiles = P.slice(F.page * per, F.page * per + per);
+    tiles.forEach((p, i) => {
+      const col = i % 4, row = Math.floor(i / 4), x = 40 + col * 432, y = 280 + row * 350, w = 408, h = 230;
+      rrect(x, y, w, h, 12); c.fillStyle = '#000'; c.fill();
+      const im = photoImg(p); if (im) { c.save(); rrect(x, y, w, h, 12); c.clip(); const k = Math.max(w / p.w, h / p.h); c.drawImage(im, x + (w - p.w * k) / 2, y + (h - p.h * k) / 2, p.w * k, p.h * k); c.restore(); }
+      txt(fmtDate(p.t), x + 4, y + h + 32, { size: 26, w: 600 }); txt(`${p.alt.toFixed(1)} m high, ${p.mode}`, x + 4, y + h + 68, { size: 22, color: COL.mut });
+      hit(x, y, w, h + 90, () => { F.photo = F.page * per + i; openPage('files.photo'); });
+    });
+    pager(P.length, per);
+    if (P.length) button(1460, 1000, 300, 64, 'Delete all photos', () => askConfirm('Delete all photos?', `${P.length} photo${P.length > 1 ? 's' : ''} will be removed.`, 'Delete all', () => { FILES.photos = []; FILES.imgs.clear(); filesSave(); flash('Photos deleted'); }), { size: 26, color: COL.bad });
+  }
+  if (FILES.cur) UI.live = true;   // the recording row updates live
+  drawAsk();
 }
+function drawTrack(L, x, y, w, h) {
+  const c = X(); rrect(x, y, w, h, 16); c.fillStyle = '#1f2124'; c.fill();
+  const tr = L.track; let span = 10;
+  for (const r of tr) span = Math.max(span, Math.abs(r[1]), Math.abs(r[2]));
+  const steps = [10, 20, 25, 50, 100, 200, 250, 500, 1000, 2000, 5000]; span = steps.find((s) => s >= span * 1.15) || span * 1.15;
+  const cx = x + w / 2, cy = y + h / 2, k = (Math.min(w, h) / 2 - 30) / span;
+  c.strokeStyle = 'rgba(169,175,182,0.25)'; c.lineWidth = 2;
+  for (const f of [0.5, 1]) { c.beginPath(); c.arc(cx, cy, span * f * k, 0, Math.PI * 2); c.stroke(); }
+  c.beginPath(); c.moveTo(cx - span * k, cy); c.lineTo(cx + span * k, cy); c.moveTo(cx, cy - span * k); c.lineTo(cx, cy + span * k); c.stroke();
+  txt('N', cx + 12, y + 34, { size: 24, color: COL.mut }); txt(`rings ${span / 2} m and ${span} m`, x + 24, y + h - 28, { size: 22, color: COL.mut });
+  // path: colour by height (low blue, high orange)
+  const maxA = Math.max(1, L.maxAlt);
+  for (let i = 1; i < tr.length; i++) {
+    const a = tr[i - 1], b = tr[i], f = clamp(b[3] / maxA, 0, 1);
+    c.strokeStyle = `hsl(${210 - 180 * f},85%,${55 + 10 * f}%)`; c.lineWidth = 6; c.lineCap = 'round';
+    c.beginPath(); c.moveTo(cx + a[1] * k, cy - a[2] * k); c.lineTo(cx + b[1] * k, cy - b[2] * k); c.stroke();
+  }
+  c.beginPath(); c.arc(cx, cy, 18, 0, Math.PI * 2); c.fillStyle = '#ffd23f'; c.fill(); txt('H', cx, cy + 1, { size: 22, w: 800, align: 'center', color: '#1c1e21' });
+  if (tr.length) {
+    const e = tr[tr.length - 1]; c.beginPath(); c.arc(cx + e[1] * k, cy - e[2] * k, 13, 0, Math.PI * 2); c.fillStyle = L.live ? COL.bad : '#fff'; c.fill();
+  }
+  // altitude strip along the bottom
+  if (tr.length > 1) {
+    const sx = x + 24, sw = w - 48, sy = y + h - 120, sh = 60, tMax = Math.max(1, tr[tr.length - 1][0]);
+    c.strokeStyle = 'rgba(255,255,255,0.75)'; c.lineWidth = 3; c.beginPath();
+    tr.forEach((r, i) => { const px = sx + sw * r[0] / tMax, py = sy + sh - sh * r[3] / maxA; i ? c.lineTo(px, py) : c.moveTo(px, py); }); c.stroke();
+    txt(`height, max ${L.maxAlt.toFixed(1)} m`, sx, sy - 18, { size: 20, color: COL.mut });
+  }
+}
+function pageFileLog() {
+  const c = X(); c.fillStyle = COL.bg; c.fillRect(0, 0, 1800, 1080); statusBar(false);
+  const F = UI.files, L = F.sel === 'cur' ? curLogView() : FILES.logs.find((l) => l.id === F.sel);
+  if (!L) { header('Flight'); txt(F.sel === 'cur' ? 'This flight has ended. It is now in the list.' : 'This log was deleted.', 900, 520, { size: 32, color: COL.mut, align: 'center' }); button(720, 600, 360, 84, 'Back to Files', () => goBack(), { on: true, size: 30 }); return; }
+  header(`Flight, ${fmtDate(L.start)}`);
+  badge(1760, 106, L.result, RESULT_COL[L.result] || COL.btn);
+  drawTrack(L, 40, 180, 880, 880);
+  [['summary', 'Summary'], ['events', `Events (${L.events.length})`]].forEach(([k, l], i) => button(960 + i * 400, 180, 380, 70, l, () => { F.view = k; F.evPage = 0; }, { on: F.view === k, size: 28 }));
+  if (F.view === 'summary') {
+    const rows = [
+      ['In the air', fmtDur(L.airT)], ['Armed', fmtDur(L.armT)], ['Max height', `${L.maxAlt.toFixed(1)} m`], ['Furthest from home', fmtDist(L.maxDist)],
+      ['Distance flown', fmtDist(L.flown)], ['Top speed', `${L.maxSpd.toFixed(1)} m/s`], ['Drone battery', `${L.battStart}% to ${L.battEnd}%`],
+      ['Flown with', (L.sources && L.sources.length ? L.sources.join(', ') : 'Automatic only')], ['Photos', String(L.photos || 0)], ['Ended', L.live ? 'Still flying' : L.result],
+    ];
+    rows.forEach(([k, v], i) => { const y = 300 + i * 64; txt(k, 960, y, { size: 28, color: COL.mut }); txt(v, 1760, y, { size: 28, w: 600, align: 'right' }); c.fillStyle = COL.line; c.fillRect(960, y + 30, 800, 2); });
+  } else {
+    const per = 10, pages = Math.max(1, Math.ceil(L.events.length / per)); F.evPage = Math.min(F.evPage, pages - 1);
+    L.events.slice(F.evPage * per, F.evPage * per + per).forEach((e, i) => { const y = 300 + i * 62; txt(fmtClock(e[0]), 960, y, { size: 26, mono: true, color: COL.mut }); txt(String(e[1]).slice(0, 52), 1080, y, { size: 28 }); });
+    if (pages > 1) {
+      button(960, 930, 160, 56, 'Prev', () => { F.evPage = Math.max(0, F.evPage - 1); }, { size: 26 });
+      txt(`${F.evPage + 1} / ${pages}`, 1200, 958, { size: 24, color: COL.mut, align: 'center' });
+      button(1280, 930, 160, 56, 'Next', () => { F.evPage = Math.min(pages - 1, F.evPage + 1); }, { size: 26 });
+    }
+  }
+  if (!L.live) {
+    button(960, 1000, 380, 64, 'Export CSV', () => exportLog(L), { on: true, size: 28 });
+    button(1380, 1000, 380, 64, 'Delete', () => askConfirm('Delete this flight log?', fmtDate(L.start), 'Delete', () => { FILES.logs = FILES.logs.filter((l) => l.id !== L.id); filesSave(); flash('Flight log deleted'); goBack(); }), { fill: COL.bad, size: 28 });
+  } else { txt('Recording. The log is saved when the drone lands and disarms.', 960, 1032, { size: 24, color: COL.mut }); UI.live = true; }
+  drawAsk();
+}
+function pageFilePhoto() {
+  const c = X(); c.fillStyle = '#000'; c.fillRect(0, 0, 1800, 1080); statusBar(false);
+  const F = UI.files, P = FILES.photos; F.photo = clamp(F.photo, 0, Math.max(0, P.length - 1)); const p = P[F.photo];
+  if (!p) { header('Photo'); txt('No photo', 900, 520, { size: 32, color: COL.mut, align: 'center' }); return; }
+  header(`Photo ${F.photo + 1} of ${P.length}`);
+  const im = photoImg(p), bx = 40, by = 176, bw = 1720, bh = 740;
+  if (im) { const k = Math.min(bw / p.w, bh / p.h); c.drawImage(im, bx + (bw - p.w * k) / 2, by + (bh - p.h * k) / 2, p.w * k, p.h * k); }
+  txt(`${fmtDate(p.t)}   ·   ${p.alt.toFixed(1)} m high   ·   ${fmtDist(Math.hypot(p.x, p.y))} from home   ·   heading ${String(p.hdg).padStart(3, '0')}°   ·   ${p.mode}`, 40, 960, { size: 26, color: COL.mut });
+  button(40, 1000, 160, 64, '‹', () => { F.photo = Math.max(0, F.photo - 1); }, { size: 40, color: F.photo ? COL.fg : COL.mut });
+  button(220, 1000, 160, 64, '›', () => { F.photo = Math.min(P.length - 1, F.photo + 1); }, { size: 40, color: F.photo < P.length - 1 ? COL.fg : COL.mut });
+  button(1000, 1000, 360, 64, 'Download', () => { const d = new Date(p.t); fileDownload(`photo-${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}-${String(d.getHours()).padStart(2, '0')}${String(d.getMinutes()).padStart(2, '0')}${String(d.getSeconds()).padStart(2, '0')}.jpg`, dataUrlBlob(p.data)); }, { on: true, size: 28 });
+  button(1400, 1000, 360, 64, 'Delete', () => askConfirm('Delete this photo?', fmtDate(p.t), 'Delete', () => { FILES.photos = FILES.photos.filter((q) => q.id !== p.id); FILES.imgs.delete(p.id); filesSave(); flash('Photo deleted'); if (!FILES.photos.length) goBack(); }), { fill: COL.bad, size: 28 });
+  drawAsk();
+}
+H12.files = {
+  get logs() { return FILES.logs; }, get photos() { return FILES.photos; }, get recording() { return curLogView(); }, get saved() { return FILES.persist; },
+  takePhoto, csv: (id) => { const L = FILES.logs.find((l) => l.id === id); return L ? logCsv(L) : null; },
+  clear() { FILES.logs = []; FILES.photos = []; FILES.imgs.clear(); filesSave(); UI.dirty = true; },
+};
 function pageBoot() {
   const c = X(); c.fillStyle = '#0b0c0e'; c.fillRect(0, 0, 1920, 1080);
   const t = power.bootT / 3;
@@ -3076,7 +3363,7 @@ function drawOverlays() {
     UI.live = true;
   }
 }
-const PAGES = { home: pageHome, helper: pageHelper, 'helper.mode': pageMode, 'helper.monitor': pageMonitor, 'helper.bind': pageBind, 'helper.video': pageVideo, 'helper.adv': pageAdv, gcs: pageGcs, settings: pageSettings, files: pageFiles, video: pageVideo };
+const PAGES = { home: pageHome, helper: pageHelper, 'helper.mode': pageMode, 'helper.monitor': pageMonitor, 'helper.bind': pageBind, 'helper.video': pageVideo, 'helper.adv': pageAdv, gcs: pageGcs, settings: pageSettings, files: pageFiles, 'files.log': pageFileLog, 'files.photo': pageFilePhoto, video: pageVideo };
 function drawUI() {
   const c = UI.ctx; UI.hits = []; UI.live = false;
   c.setTransform(UI.s, 0, 0, UI.s, 0, 0);
@@ -4047,7 +4334,10 @@ async function startPhoneLink() {
 }
 function onPilotState(st) {
   if (!st || typeof st !== 'object' || typeof st.seq !== 'number' || st.seq === PH.lastSeq) return;
-  PH.lastSeq = st.seq; PHONE.lastT = IO.t; PH.rxCount++;
+  PH.lastSeq = st.seq;
+  // SkyVision RC flying through the RC: a monitor heartbeat with no sticks (the sticks reach the page through the RC)
+  if (st.mon) { PH.monT = IO.t; if (typeof st.ts === 'number') PH.pong = st.ts; if (typeof st.rtt === 'number' && st.rtt >= 0 && st.rtt < 10000) PHONE.rtt = Math.round(st.rtt); return; }
+  PHONE.lastT = IO.t; PH.rxCount++;
   if (!PHONE.active) { PHONE.active = true; hooks.toast('Phone controller connected'); flash('Phone controller connected'); }
   const v = (x) => clamp(Number(x) || 0, -1, 1);
   const fn = { throttle: v(st.thr), yaw: v(st.yaw), pitch: v(st.pit), roll: v(st.rol) };
@@ -4062,7 +4352,7 @@ function onPilotState(st) {
 const PHONE_CMDS = { arm: 'arm', disarm: 'disarm', takeoff: 'takeoff', land: 'land', rth: 'return', estop: 'estop', althold: 'althold', speed: 'speed', swap: 'swap' };
 function onPilotCmd(c) {
   if (!c || typeof c.id !== 'string' || c.id.length > 24 || !PHONE_CMDS[c.c]) return;
-  PHONE.lastT = IO.t; PHONE.active = true;
+  if (c.mon) PH.monT = IO.t; else { PHONE.lastT = IO.t; PHONE.active = true; }   // a monitor's command never starts the phone failsafe
   if (PH.seenCmd.has(c.id)) return;                 // a resend: the ack is already in the telemetry
   const r = vehCommand(PHONE_CMDS[c.c], c.a);
   PH.seenCmd.set(c.id, IO.t); if (PH.seenCmd.size > 64) PH.seenCmd.delete(PH.seenCmd.keys().next().value);
@@ -4078,6 +4368,10 @@ function sendTelemetry() {
     dist: Math.round(+T.dist || 0), batt: Math.round(+T.battPct || 0), mode: String(T.mode || ''), armed: !!T.armed,
     ah: DEMO.altHold, sm: DEMO.speedMode, warn: T.demo ? DEMO.warn : '', fl: Math.round(+T.t || 0), demo: !!T.demo, ph: DEMO.mode,
     rc: power.on && power.phase === 'on', rcLink: !link.lost, pong: PH.pong, acks: PH.acks,
+    // position for live tracking in SkyVision RC: metres east (x) and north (y) of home
+    x: +(((+T.lon || 0) - T.home.lon) * 111320 * Math.cos(T.home.lat * DEG)).toFixed(1), y: +(((+T.lat || 0) - T.home.lat) * 110540).toFixed(1),
+    // sticks the simulated receiver gets (roll, pitch, throttle, yaw) and who moves them, for the app's sync check
+    in: [0, 1, 2, 3].map((i) => +clamp((H12.channels[i] - 1500) / 500, -1, 1).toFixed(3)), own: mech.owner.RY || mech.owner.LY || null,
   });
 }
 setInterval(sendTelemetry, 50);   // 20 per second (the room budget is about 40 per second per page)
@@ -4101,6 +4395,7 @@ setInterval(() => {
 }, 500);
 function phoneStatusText() {
   const d = PH.upStatus.detail;
+  if (PHONE.status !== 'connected' && PHONE.status !== 'lost' && PH.monT && IO.t - PH.monT < 2) return { t: `SkyVision RC app connected (flying through the RC)${PHONE.rtt != null ? ' · ' + PHONE.rtt + ' ms round trip' : ''}`, c: 'dotok' };
   switch (PHONE.status) {
     case 'connected': return { t: `Connected${PHONE.rtt != null ? ' · ' + PHONE.rtt + ' ms round trip' : ''}`, c: 'dotok' };
     case 'lost': { const a = IO.t - PHONE.lastT; return { t: `Signal lost ${a.toFixed(0)} s: ${a < 5 ? 'hovering' : 'returning home'}`, c: 'dotbad' }; }
