@@ -645,7 +645,7 @@ body.assigning #stage canvas{cursor:crosshair}
             <label><input type="radio" name="quality" value="high">High</label>
             <label><input type="radio" name="quality" value="standard">Standard</label>
           </div>
-          <p class="note" style="margin-top:6px">High adds ambient occlusion, anti-aliasing, a light glow on the LEDs and a 1920 × 1080 screen. Standard (default on phones) uses a 960 × 540 screen.</p>
+          <p class="note" style="margin-top:6px">High adds ambient occlusion, anti-aliasing, a light glow on the LEDs and a 1920 × 1080 screen. Standard (the default) uses a 960 × 540 screen.</p>
         </div>
         <div>
           <div class="fieldlabel" style="margin-bottom:6px">Background</div>
@@ -4254,7 +4254,7 @@ syncConfigUI(); syncAntennaUI(); setHandle('carry'); state.handleAng = HANDLE_AN
 $('#dist').value = link.dist; $('#distVal').textContent = link.dist.toFixed(2) + ' km';
 window.addEventListener('resize', resize); mqNarrow.addEventListener('change', resize); new ResizeObserver(resize).observe(host);
 applyBackground();
-setQuality(!isTouch && !smallScreen ? 'high' : 'standard');
+setQuality('standard');   // Standard by default everywhere; High is one tap away in 08 Display
 resize(); goView('threeq', 0);
 buildReport(null);
 setInterval(ioPump, 4);
